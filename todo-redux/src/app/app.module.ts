@@ -1,8 +1,10 @@
+import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
+import { CoreModule } from './core/core.module';
 import { TodoModule } from './todo/todo.module';
 
 @NgModule({
@@ -11,6 +13,7 @@ import { TodoModule } from './todo/todo.module';
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     FormsModule,
     CoreModule,
     TodoModule
