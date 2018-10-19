@@ -17,4 +17,12 @@ export class AuthService {
   public signUp(user: UserModel): Observable<UserModel> {
     return this.http.post<UserModel>(`${this.serviceUrl}/users`, user);
   }
+
+  public getCurrentUser(): Observable<UserModel> {
+    return this.http.get<UserModel>(`${this.serviceUrl}/users/me`);
+  }
+
+  public logout(): Observable<void> {
+     return this.http.delete<void>(`${this.serviceUrl}/users/me/token`);
+  }
 }
