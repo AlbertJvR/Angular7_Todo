@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
-import { PreloadAllModules, RouterModule } from '@angular/router';
+import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { HomeComponent } from './core/home/home.component';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'todos', loadChildren: './recipes/recipes.module#RecipesModule'}
+  { path: 'todos', loadChildren: './todo/todo.module#TodoModule'}
 ];
 
 @NgModule({

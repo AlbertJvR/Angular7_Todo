@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { UserModel } from '../../shared/models/user.model';
@@ -9,13 +9,12 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
-  public signIn(user: UserModel): Observable<UserModel> {
-    return this.http.post<UserModel>(`${this.serviceUrl}/users/login`, user);
-    // resp.headers.get('x-auth')
+  public signIn(user: UserModel): Observable<HttpResponse<UserModel>> {
+    return this.http.post<UserModel>(`${this.serviceUrl}/users/login`, user, {observe: 'response'});
   }
 
-  public signUp(user: UserModel): Observable<UserModel> {
-    return this.http.post<UserModel>(`${this.serviceUrl}/users`, user);
+  public signUp(user: UserModel): Observable<HttpResponse<UserModel>> {
+    return this.http.post<UserModel>(`${this.serviceUrl}/users`, user, {observe: 'response'});
   }
 
   public getCurrentUser(): Observable<UserModel> {

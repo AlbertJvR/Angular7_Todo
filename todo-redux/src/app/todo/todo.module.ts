@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { TodoRoutingModule } from './todo-routing.module';
+import { TodoComponent } from './todo.component';
 
 
 @NgModule({
@@ -13,7 +14,9 @@ import { TodoRoutingModule } from './todo-routing.module';
     TodoRoutingModule
   ],
   exports: [],
-  declarations: [],
+  declarations: [
+    TodoComponent
+  ],
   providers: []
 })
 export class TodoModule {
