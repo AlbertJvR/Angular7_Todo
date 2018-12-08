@@ -1,0 +1,144 @@
+.turtle {
+  margin-top: 20%;
+  margin-left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px;
+  height: 500px;
+  animation: walking-turtle-03 2s ease-in-out infinite alternate;
+}
+
+.shell {
+  width: 220px;
+  height: 250px;
+  background-color: #6A757A;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  overflow: hidden;
+  &::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200px;
+    height: 235px;
+    background-color: #5D666B;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+  }
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 50%;
+    height: 100%;
+    background-color: white;
+    opacity: 0.1;
+  }
+
+  div {
+    width: 120px;
+    height: 80px;
+    background: #636E72;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  div::before, div::after {
+    content: "";
+    position: absolute;
+    left: 0;
+  }
+  div::before {
+    top: -30px;
+    border-left: 60px solid transparent;
+    border-right: 60px solid transparent;
+    border-bottom: 30px solid #636E72;
+  }
+  div::after {
+    bottom: -30px;
+    left: 0;
+    border-left: 60px solid transparent;
+    border-right: 60px solid transparent;
+    border-top: 30px solid #636E72;
+  }
+}
+.head {
+  width: 75px;
+  height: 85px;
+  border-radius: 50%;
+  background-color: #82C49F;
+  position: relative;
+  top: 22%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  &::before, &::after {
+    content: "";
+    position: absolute;
+    top: 20px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #6A757A;
+  }
+  &::before {left: 13px}
+  &::after {right: 13px}
+}
+
+.tail {
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 35px solid #84C3A0;
+  position: absolute;
+  bottom: 18%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.legs-01, .legs-02 {
+  width: 30px;
+  height: 300px;
+  border-radius: 20%;
+  background-color: #82C49F;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+.legs-01 {
+  transform: translate(-50%, -50%) rotate(-45deg);
+  animation: walking-turtle-01 2s ease-in-out infinite alternate;
+}
+.legs-02 {
+  transform: translate(-50%, -50%) rotate(45deg);
+  animation: walking-turtle-02 2s ease-in-out infinite alternate;
+}
+
+@keyframes walking-turtle-01 {
+  0% 	 {transform: translate(-50%, -50%) rotate(-40deg)}
+  25%  {transform: translate(-50%, -50%) rotate(-45deg)}
+  50%  {transform: translate(-50%, -50%) rotate(-30deg)}
+  75%  {transform: translate(-50%, -50%) rotate(-45deg)}
+  100% {transform: translate(-50%, -50%) rotate(-40deg)}
+}
+
+@keyframes walking-turtle-02 {
+  0% 	 {transform: translate(-50%, -50%) rotate(40deg)}
+  25%  {transform: translate(-50%, -50%) rotate(45deg)}
+  50%  {transform: translate(-50%, -50%) rotate(35deg)}
+  75%  {transform: translate(-50%, -50%) rotate(45deg)}
+  100% {transform: translate(-50%, -50%) rotate(30deg)}
+}
+
+@keyframes walking-turtle-03 {
+  0% 	 {transform: translate(-50%, -50%) rotate(0deg)}
+  25%  {transform: translate(-50%, -50%) rotate(3deg)}
+  50%  {transform: translate(-50%, -50%) rotate(-1deg)}
+  75%  {transform: translate(-50%, -50%) rotate(2deg)}
+  100% {transform: translate(-50%, -50%) rotate(-1deg)}
+}
