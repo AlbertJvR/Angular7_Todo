@@ -7,6 +7,18 @@
       placeholder="What to do??"
       (keydown.enter)="addTodoHandler(todoText.value)">
   </mat-form-field>
+  <div class="col-2 pt-3">
+    <button
+      mat-button
+      color="primary"
+      [disabled]="todoItems.length === 0"
+      (click)="viewTodoHandler()">VIEW</button>
+    <button
+      mat-button
+      color="warn"
+      [disabled]="todoItems.length === 0"
+    (click)="completeTodoHandler()">COMPLETE</button>
+  </div>
 </div>
 
 <div class="row">
@@ -21,10 +33,11 @@
         <mat-list-option
           *ngFor="let item of todoItems"
           [selected]="item.selected"
-          (click)="item.selected = !item.selected"
-          [value]="item.id"
-          [ngClass]="{'strikeout': item.selected === true}">{{item.text}}</mat-list-option>
+          (click)="itemSelectedHandler(item)"
+          [value]="item.id">{{item.text}}</mat-list-option>
       </mat-selection-list>
     </div>
   </div>
 </div>
+
+<router-outlet></router-outlet>

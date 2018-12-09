@@ -1,4 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-todo',
@@ -11,7 +12,7 @@ export class TodoComponent implements OnInit {
   public todoItems: any[] = [];
   public todoCount = 0;
 
-  constructor() {
+  constructor(private router: Router) {
   }
 
   ngOnInit() {
@@ -26,7 +27,25 @@ export class TodoComponent implements OnInit {
     };
 
     this.todoItems.push(newTodo);
-
     this.todoTextBox.nativeElement.value = '';
+  }
+
+  public itemSelectedHandler(item: any): void {
+    this.todoItems.map((todoItem) => {
+      todoItem.selected = item.id === todoItem.id;
+      return todoItem;
+    });
+  }
+
+  public viewTodoHandler(): void {
+    const selectedTodoIndex = this.todoItems.findIndex((todoItem) => todoItem.selected);
+
+    console.log(this.todoItems[selectedTodoIndex].id);
+
+    this.router.navigate(['/todos/' + this.todoItems[selectedTodoIndex].id]);
+  }
+
+  public completeTodoHandler(): void {
+    this.todoItems = this.todoItems.filter((todoItem) => !todoItem.selected);
   }
 }
