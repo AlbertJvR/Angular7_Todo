@@ -1,3 +1,38 @@
-<p>
-  todo-detail works!
-</p>
+<div *ngIf="(selectedTodo$ | async) as todo; else loading">
+  <div class="row">
+    <mat-card class="col-6 offset-3 mt-2 mb-2">
+      <mat-card-header>
+        <mat-card-title>Todo: {{todo.text}}</mat-card-title>
+        <mat-card-subtitle>Completed: {{todo.completed}}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-form-field
+          class="col-12">
+          <mat-label>Description</mat-label>
+          <input
+            matInput
+            placeholder="Description"
+            [value]="todo.text">
+        </mat-form-field>
+        <mat-slide-toggle
+          class="col-12"
+          labelPosition="before"
+          [checked]="todo.completed">
+          Completed
+        </mat-slide-toggle>
+        <mat-form-field
+          class="col-12">
+          <mat-label>Completed At</mat-label>
+          <input
+            matInput
+            placeholder="Completed At"
+            [value]="todo.completedAt">
+        </mat-form-field>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+
+<ng-template #loading>
+  Loading stuff...
+</ng-template>

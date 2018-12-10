@@ -9,22 +9,34 @@ const bcrypt = require('bcryptjs');
 var {mongoose} = require('./db/mongoose');
 var {Todo} = require('./models/todo');
 var {User} = require('./models/user');
-var {authenticate} = require('./middelware/authenticate');
 
 var app = express();
 const port = process.env.PORT;
 
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header('Access-Control-Allow-Methods', 'GET,PATCH,PUT,POST,DELETE');
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  });
+
 app.use(bodyParser.json());
 
-app.post('/todos', authenticate, (req, res) => {
+app.post('/todos', (req, res) => {
     var todo = new Todo({
-        text: req.body.text,
-        _creator: req.user._id
+        text: req.body.text
     });
 
     todo.save()
         .then((doc) => {
-            res.send(doc);
+            const newTodo = {
+                id: doc._id,
+                text: doc.text,
+                completed: false,
+                completedAt: doc.completedAt
+            };
+
+            res.send(newTodo);
         }, (err) => {
             res.status(400).send(err);
         });
@@ -46,20 +58,26 @@ app.post('/users', async (req, res) => {
     }
 });
 
-app.get('/todos', authenticate, (req, res) => {
-    Todo.find({
-            _creator: req.user._id
-        })
+app.get('/todos', (req, res) => {
+    Todo.find({})
         .then((todos) => {
-            res.send({
-                todos
-            });
+            const temp = todos.map((todoItem) => {
+                const newTodo = {
+                    id: todoItem._id,
+                    text: todoItem.text,
+                    completed: todoItem.completed,
+                    completedAt: todoItem.completedAt
+                };
+
+                return newTodo;
+            })
+            res.send(temp);
         }, (err) => {
             res.status(400).send(err);
         });
 });
 
-app.get('/todos/:id', authenticate, (req, res) => {
+app.get('/todos/:id', (req, res) => {
     var todoId = req.params.id;
 
     if (!ObjectID.isValid(todoId)) {
@@ -67,22 +85,31 @@ app.get('/todos/:id', authenticate, (req, res) => {
     }
 
     Todo.findOne({
-        _id: todoId,
-        _creator: req.user._id
+        _id: todoId
     })
     .then((todo) => {
         if (!todo) {
             return res.status(404).send();
         }
 
-        res.send({todo});
+        const date = new Date(todo.completedAt);
+        const completedAtFormatted = todo.completedAt ? date.getFullYear() + '/' + date.getMonth() + '/' + date.getDate() : '';
+
+        const newTodo = {
+            id: todo._id,
+            text: todo.text,
+            completed: todo.completed,
+            completedAt: completedAtFormatted
+        };
+
+        res.send(newTodo);
     })
     .catch((err) => {
         res.status(400).send();
     });
 });
 
-app.delete('/todos/:id', authenticate, async (req, res) => {
+app.delete('/todos/:id', async (req, res) => {
     try {
         const todoId = req.params.id;
 
@@ -91,8 +118,7 @@ app.delete('/todos/:id', authenticate, async (req, res) => {
         }
 
         const todo = await Todo.findOneAndRemove({
-                _id: todoId,
-                _creator: req.user._id
+                _id: todoId
             });
 
         if (!todo) {
@@ -106,7 +132,7 @@ app.delete('/todos/:id', authenticate, async (req, res) => {
     }
 });
 
-app.patch('/todos/:id', authenticate, (req, res) => {
+app.patch('/todos/:id', (req, res) => {
     const id = req.params.id;
     const body = _.pick(req.body, ['text', 'completed']);
 
@@ -122,8 +148,7 @@ app.patch('/todos/:id', authenticate, (req, res) => {
     }
 
     Todo.findOneAndUpdate({
-        _id: id,
-        _creator: req.user._id
+        _id: id
     }, 
     {$set: body}, 
     {new: true})
@@ -139,11 +164,11 @@ app.patch('/todos/:id', authenticate, (req, res) => {
         });
 });
 
-app.get('/users/me', authenticate, (req, res) => {
+app.get('/users/me', (req, res) => {
     res.send(req.user);
 });
 
-app.delete('/users/me/token', authenticate, async (req, res) => {
+app.delete('/users/me/token', async (req, res) => {
     try {
         await req.user.removeToken(req.token);
         res.status(200).send();
