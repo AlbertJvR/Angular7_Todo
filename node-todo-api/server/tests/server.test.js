@@ -199,9 +199,9 @@ describe('UPDATE /todos/:id', () => {
       .send({text: 'First test todo', completed: false})
       .expect(200)
       .expect((response) => {
-        expect(response.body.text).toBe('First test todo');
-        expect(response.body.completed).toBe(false);
-        expect(response.body.completedAt).toBeNull();
+        expect(response.body.todo.text).toBe('First test todo');
+        expect(response.body.todo.completed).toBe(false);
+        expect(response.body.todo.completedAt).toBeNull();
       })
       .end(done);
   });

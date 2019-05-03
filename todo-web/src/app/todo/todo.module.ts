@@ -11,6 +11,7 @@ import { MatButtonModule,
 } from '@angular/material';
 import { RouterModule } from '@angular/router';
 import { StoreModule } from '@ngrx/store';
+import { SocketIoModule } from 'ngx-socket-io';
 import { todoReducer } from './store/todo.reducer';
 
 import { TodoComponent } from './todo.component';
@@ -33,6 +34,7 @@ import { TodoRoutingModule } from './todo-routing.module';
     MatButtonModule,
     MatCardModule,
     MatSlideToggleModule,
+    SocketIoModule,
     StoreModule.forFeature('todo', todoReducer)
   ],
   exports: [],

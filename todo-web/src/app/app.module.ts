@@ -6,12 +6,12 @@ import { MatButtonModule, MatToolbarModule } from '@angular/material';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { SocketIoModule } from 'ngx-socket-io';
 import { environment } from '../environments/environment';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
-import { TodoService } from './todo/services/todo.service';
 import { appReducers } from './store/app.reducer';
 
 @NgModule({
@@ -26,11 +26,12 @@ import { appReducers } from './store/app.reducer';
     AppRoutingModule,
     MatToolbarModule,
     MatButtonModule,
+    SocketIoModule,
     StoreModule.forRoot(appReducers),
     StoreRouterConnectingModule,
     !environment.production ? StoreDevtoolsModule.instrument() : []
   ],
-  providers: [TodoService],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

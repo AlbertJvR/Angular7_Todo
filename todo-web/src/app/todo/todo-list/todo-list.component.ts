@@ -5,6 +5,7 @@ import { uniqueId } from 'lodash';
 import { take } from 'rxjs/operators';
 import { Observable } from 'rxjs/internal/Observable';
 import { TodoModel } from '../../shared/models/todo.model';
+import { TodoSocketService } from '../services/todo-socket.service';
 import { TodoService } from '../services/todo.service';
 import * as fromTodo from '../store/todo.reducer';
 import * as TodoActions from '../store/todo.actions';
@@ -22,7 +23,8 @@ export class TodoListComponent implements OnInit {
   constructor(
     private store: Store<fromTodo.TodoState>,
     private router: Router,
-    private todoService: TodoService) {
+    private todoService: TodoService,
+    private todoSocketService: TodoSocketService) {
       this.todos$ = store.pipe(
         select(fromTodo.getTodos)
       ) as Observable<TodoModel[]>;
@@ -48,6 +50,7 @@ export class TodoListComponent implements OnInit {
         console.log(todoItem);
         newTodo.id = todoItem.id;
         this.store.dispatch(new TodoActions.AddTodo(newTodo));
+        this.todoSocketService.dispatch('todoCreated', newTodo);
       });
 
     this.todoTextBox.nativeElement.value = '';
@@ -77,6 +80,7 @@ export class TodoListComponent implements OnInit {
         this.todoService.updateTodo(itemToUpdate.id, itemToUpdate)
           .subscribe((data) => {
             this.store.dispatch(new TodoActions.UpdateTodo(itemToUpdate));
+            this.todoSocketService.dispatch('todoUpdated', itemToUpdate);
           });
       });
 

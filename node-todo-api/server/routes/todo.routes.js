@@ -24,6 +24,8 @@ module.exports = function (io) {
         completedAt: savedTodo.completedAt
       };
 
+      io.sockets.emit('todoCreated', newTodo);
+
       res.send(newTodo);
     } catch (error) {
       return res.status(400).send(error);
@@ -94,6 +96,8 @@ module.exports = function (io) {
         return res.status(404).send();
       }
 
+      io.sockets.emit('todoDeleted', todo);
+
       res.send({todo});
 
     } catch (error) {
@@ -128,6 +132,8 @@ module.exports = function (io) {
     if (!todo) {
       return res.status(404).send();
     }
+
+    io.sockets.emit('todoUpdated', todo);
 
     res.send({todo});
   });
