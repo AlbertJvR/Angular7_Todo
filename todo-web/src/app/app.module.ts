@@ -13,6 +13,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { appReducers } from './store/app.reducer';
+import {EffectsModule} from '@ngrx/effects';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { appReducers } from './store/app.reducer';
     MatButtonModule,
     SocketIoModule,
     StoreModule.forRoot(appReducers),
+    EffectsModule.forRoot([]),
     StoreRouterConnectingModule,
     !environment.production ? StoreDevtoolsModule.instrument() : []
   ],

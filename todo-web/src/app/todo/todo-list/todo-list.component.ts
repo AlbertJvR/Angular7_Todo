@@ -1,30 +1,28 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
-import { uniqueId } from 'lodash';
-import { take } from 'rxjs/operators';
+import {take, takeUntil} from 'rxjs/operators';
 import { Observable } from 'rxjs/internal/Observable';
 import { TodoModel } from '../../shared/models/todo.model';
-import { TodoSocketService } from '../services/todo-socket.service';
 import { TodoService } from '../services/todo.service';
 import * as fromTodo from '../store/todo.reducer';
 import * as TodoActions from '../store/todo.actions';
+import {Subject} from 'rxjs/internal/Subject';
 
 @Component({
   selector: 'app-todo-list',
   templateUrl: './todo-list.component.html',
   styleUrls: ['./todo-list.component.scss']
 })
-export class TodoListComponent implements OnInit {
+export class TodoListComponent implements OnInit, OnDestroy {
   @ViewChild('todoText') todoTextBox: ElementRef;
-
+  private destroySubject$: Subject<void> = new Subject();
   public todos$: Observable<TodoModel[]>;
 
   constructor(
     private store: Store<fromTodo.TodoState>,
     private router: Router,
-    private todoService: TodoService,
-    private todoSocketService: TodoSocketService) {
+    private todoService: TodoService) {
       this.todos$ = store.pipe(
         select(fromTodo.getTodos)
       ) as Observable<TodoModel[]>;
@@ -38,6 +36,11 @@ export class TodoListComponent implements OnInit {
       .subscribe((data: TodoModel[]) => this.store.dispatch(new TodoActions.SetTodos(data)));
   }
 
+  public ngOnDestroy(): void {
+    this.destroySubject$.next();
+    this.destroySubject$.complete();
+  }
+
   public addTodoHandler(todoText: string): void {
     const newTodo: TodoModel = new TodoModel(
       null,
@@ -46,12 +49,10 @@ export class TodoListComponent implements OnInit {
       false);
 
     this.todoService.createTodo(newTodo)
-      .subscribe((todoItem: TodoModel) => {
-        console.log(todoItem);
-        newTodo.id = todoItem.id;
-        this.store.dispatch(new TodoActions.AddTodo(newTodo));
-        this.todoSocketService.dispatch('todoCreated', newTodo);
-      });
+      .pipe(
+        takeUntil(this.destroySubject$)
+      )
+      .subscribe();
 
     this.todoTextBox.nativeElement.value = '';
   }
@@ -78,11 +79,10 @@ export class TodoListComponent implements OnInit {
         itemToUpdate.completed = true;
 
         this.todoService.updateTodo(itemToUpdate.id, itemToUpdate)
-          .subscribe((data) => {
-            this.store.dispatch(new TodoActions.UpdateTodo(itemToUpdate));
-            this.todoSocketService.dispatch('todoUpdated', itemToUpdate);
-          });
+          .pipe(
+            takeUntil(this.destroySubject$)
+          )
+          .subscribe();
       });
-
   }
 }

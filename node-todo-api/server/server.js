@@ -16,6 +16,7 @@ io.on('connection', socket => {
 
   socket.on('todoCreated', (todo) => {
     io.sockets.emit('todoCreated', todo);
+    console.log('[TODO] Created');
   });
 
   socket.on('todoUpdated', (todo) => {

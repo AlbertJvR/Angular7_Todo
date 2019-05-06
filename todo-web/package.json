@@ -32,7 +32,6 @@
     "jquery": "^3.4.0",
     "lodash": "^4.17.11",
     "ngx-socket-io": "^2.1.1",
-    "popper": "^1.0.1",
     "popper.js": "^1.14.7",
     "rxjs": "~6.5.1",
     "tslib": "^1.9.3",
