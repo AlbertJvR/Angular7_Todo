@@ -18,14 +18,21 @@ export class TodoDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private todoService: TodoService,
-    private store: Store<fromTodo.TodoState>) { }
+    private todoService: TodoService) { }
 
-  ngOnInit() {
+  public ngOnInit(): void {
     this.selectedTodo$ = this.route.paramMap
       .pipe(
         take(1),
         switchMap((params: ParamMap) => this.todoService.getTodoById(params.get('id')))
       );
+  }
+
+  public saveHandler(todo: TodoModel): void {
+    this.todoService.updateTodo(todo.id, todo)
+      .pipe(
+        take(1)
+      )
+      .subscribe();
   }
 }

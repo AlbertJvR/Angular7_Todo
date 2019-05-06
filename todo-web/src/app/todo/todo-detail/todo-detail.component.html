@@ -12,12 +12,13 @@
           <input
             matInput
             placeholder="Description"
-            [value]="todo.text">
+            [(ngModel)]="todo.text">
         </mat-form-field>
         <mat-slide-toggle
           class="col-12"
           labelPosition="before"
-          [checked]="todo.completed">
+          [checked]="todo.completed"
+          [disabled]="true">
           Completed
         </mat-slide-toggle>
         <mat-form-field
@@ -26,8 +27,12 @@
           <input
             matInput
             placeholder="Completed At"
-            [value]="todo.completedAt">
+            [value]="todo.completedAt"
+            [readonly]="true">
         </mat-form-field>
+        <div class="button-right">
+          <button mat-raised-button color="primary" (click)="saveHandler(todo)">Save</button>
+        </div>
       </mat-card-content>
     </mat-card>
   </div>
