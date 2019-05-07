@@ -8,7 +8,8 @@ import {
   MatFormFieldModule,
   MatInputModule,
   MatListModule,
-  MatSlideToggleModule
+  MatSlideToggleModule,
+  MatSnackBarModule
 } from '@angular/material';
 import {RouterModule} from '@angular/router';
 import {StoreModule} from '@ngrx/store';
@@ -36,6 +37,7 @@ import {EffectsModule} from '@ngrx/effects';
     MatButtonModule,
     MatCardModule,
     MatSlideToggleModule,
+    MatSnackBarModule,
     SocketIoModule,
     StoreModule.forFeature('todo', todoReducer),
     EffectsModule.forFeature([TodoEffects])

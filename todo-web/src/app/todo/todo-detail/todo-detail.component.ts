@@ -1,12 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, ParamMap, } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs/internal/Observable';
-import { switchMap, take } from 'rxjs/operators';
-import { TodoModel } from '../../shared/models/todo.model';
-import { TodoService } from '../services/todo.service';
-import * as fromTodo from '../store/todo.reducer';
-import * as TodoActions from '../store/todo.actions';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, ParamMap,} from '@angular/router';
+import {Observable} from 'rxjs/internal/Observable';
+import {switchMap, take} from 'rxjs/operators';
+import {TodoModel} from '../../shared/models/todo.model';
+import {TodoService} from '../services/todo.service';
+import {MatSnackBar} from '@angular/material';
 
 @Component({
   selector: 'app-todo-detail',
@@ -18,7 +16,9 @@ export class TodoDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private todoService: TodoService) { }
+    private snackBar: MatSnackBar,
+    private todoService: TodoService) {
+  }
 
   public ngOnInit(): void {
     this.selectedTodo$ = this.route.paramMap
@@ -33,6 +33,10 @@ export class TodoDetailComponent implements OnInit {
       .pipe(
         take(1)
       )
-      .subscribe();
+      .subscribe(() => {
+        this.snackBar.open('Todo saved successfully', 'Dismiss', {
+          duration: 2000
+        });
+      });
   }
 }

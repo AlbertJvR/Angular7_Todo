@@ -8,6 +8,7 @@ import { TodoService } from '../services/todo.service';
 import * as fromTodo from '../store/todo.reducer';
 import * as TodoActions from '../store/todo.actions';
 import {Subject} from 'rxjs/internal/Subject';
+import {MatSnackBar} from '@angular/material';
 
 @Component({
   selector: 'app-todo-list',
@@ -18,9 +19,11 @@ export class TodoListComponent implements OnInit, OnDestroy {
   @ViewChild('todoText') todoTextBox: ElementRef;
   private destroySubject$: Subject<void> = new Subject();
   public todos$: Observable<TodoModel[]>;
+  public itemSelected: boolean = false;
 
   constructor(
     private store: Store<fromTodo.TodoState>,
+    private snackBar: MatSnackBar,
     private router: Router,
     private todoService: TodoService) {
       this.todos$ = store.pipe(
@@ -58,6 +61,7 @@ export class TodoListComponent implements OnInit, OnDestroy {
   }
 
   public itemSelectedHandler(item: TodoModel): void {
+    this.itemSelected = true;
     this.store.dispatch(new TodoActions.SelectTodo(item));
   }
 
@@ -82,7 +86,11 @@ export class TodoListComponent implements OnInit, OnDestroy {
           .pipe(
             takeUntil(this.destroySubject$)
           )
-          .subscribe();
+          .subscribe(() => {
+            this.snackBar.open('Todo completed', 'Dismiss', {
+              duration: 2000
+            });
+          });
       });
   }
 }

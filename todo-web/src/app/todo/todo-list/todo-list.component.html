@@ -11,12 +11,12 @@
     <button
       mat-button
       color="primary"
-      [disabled]="(todos$ | async).length === 0"
+      [disabled]="(todos$ | async).length === 0 || !itemSelected"
       (click)="viewTodoHandler()">VIEW</button>
     <button
       mat-button
       color="warn"
-      [disabled]="(todos$ | async).length === 0"
+      [disabled]="(todos$ | async).length === 0 || !itemSelected"
       (click)="completeTodoHandler()">COMPLETE</button>
   </div>
 </div>
