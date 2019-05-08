@@ -6,10 +6,7 @@ export enum TodoActionType {
   RemoveTodo = '[Todo] Remove Todo',
   UpdateTodo = '[Todo] Update Todo',
   SelectTodo = '[Todo] Select Todo',
-  SetTodos = '[Todo] Set Todos',
-  ServerAddTodo = '[Todo] Server Add Todo',
-  ServerUpdateTodo = '[Todo] Server Update Todo',
-  ServerRemoveTodo = '[Todo] Server Remove Todo'
+  SetTodos = '[Todo] Set Todos'
 }
 
 export class AddTodo implements Action {
@@ -37,19 +34,4 @@ export class SetTodos implements Action {
   constructor(public payload: TodoModel[]) {}
 }
 
-export class ServerAddTodo implements Action {
-  readonly type = TodoActionType.ServerAddTodo;
-  constructor(public payload: TodoModel) {}
-}
-
-export class ServerRemoveTodo implements Action {
-  readonly type = TodoActionType.ServerRemoveTodo;
-  constructor(public payload: string) {}
-}
-
-export class ServerUpdateTodo implements Action {
-  readonly type = TodoActionType.ServerUpdateTodo;
-  constructor(public payload: TodoModel) {}
-}
-
-export type TodoActions = AddTodo | RemoveTodo | UpdateTodo | SelectTodo | SetTodos | ServerAddTodo | ServerRemoveTodo | ServerUpdateTodo;
+export type TodoActions = AddTodo | RemoveTodo | UpdateTodo | SelectTodo | SetTodos;

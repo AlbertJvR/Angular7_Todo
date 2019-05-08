@@ -1,33 +1,29 @@
 import {Injectable} from '@angular/core';
 import {Actions, Effect, ofType} from '@ngrx/effects';
 import {TodoActionType} from './todo.actions';
-import {concatMap, map} from 'rxjs/operators';
-import * as TodoActions from '../store/todo.actions';
+import {tap} from 'rxjs/operators';
 
 @Injectable()
 export class TodoEffects {
-  @Effect()
+  @Effect({dispatch: false})
   public serverTodoAdd$ = this.actions$
     .pipe(
-      ofType(TodoActionType.ServerAddTodo),
-      map((action: any) => action.payload),
-      concatMap(payload => [new TodoActions.AddTodo(payload)])
+      ofType(TodoActionType.AddTodo),
+      tap((payload) => console.log('Do something here as [AddTodo] effect', payload))
     );
 
-  @Effect()
+  @Effect({dispatch: false})
   public serverTodoUpdate$ = this.actions$
     .pipe(
-      ofType(TodoActionType.ServerUpdateTodo),
-      map((action: any) => action.payload),
-      concatMap(payload => [new TodoActions.UpdateTodo(payload)])
+      ofType(TodoActionType.UpdateTodo),
+      tap((payload) => console.log('Do something here as [UpdateTodo] effect', payload))
     );
 
-  @Effect()
+  @Effect({dispatch: false})
   public serverTodoRemove$ = this.actions$
     .pipe(
-      ofType(TodoActionType.ServerRemoveTodo),
-      map((action: any) => action.payload),
-      concatMap(payload => [new TodoActions.RemoveTodo(payload)])
+      ofType(TodoActionType.RemoveTodo),
+      tap((payload) => console.log('Do something here as [RemoveTodo] effect', payload))
     );
 
   constructor(
