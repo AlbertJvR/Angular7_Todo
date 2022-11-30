@@ -1,4 +1,4 @@
-require('./config/config');
+const {config} = require('./config');
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -9,7 +9,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
 
-const port = process.env.PORT;
+const port = config.port;
 
 io.on('connection', socket => {
   console.log('New rando connected');

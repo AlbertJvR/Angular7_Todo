@@ -38,7 +38,7 @@ export function todoReducer(state = initialState, action: TodoActions): TodoStat
     }
     case (TodoActionType.UpdateTodo): {
       const currentTodos = cloneDeep(state.todos);
-      const todoToUpdateIndex = currentTodos.findIndex((todo: TodoModel) => todo.id === action.payload.id);
+      const todoToUpdateIndex = currentTodos.findIndex((todo: TodoModel) => todo.id === action.payload['_id']);
       currentTodos[todoToUpdateIndex] = cloneDeep(action.payload);
 
       return {

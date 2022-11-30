@@ -1,0 +1,45 @@
+version: '3'
+
+services:
+  node-todo-api:
+    build: ./node-todo-api
+    environment:
+      PORT: 3000
+      NODE_ENV: 'development'
+      MONGO_HOST: 'mongodb'
+      MONGO_PORT: 27017
+      MONGO_USER: &MONGO_USER 'root'
+      MONGO_PASSWORD: &MONGO_PASSWORD 'password'
+    networks:
+      - todo
+    depends_on:
+      - mongodb
+    ports:
+      - 3000:3000
+      - 9233:9233
+
+  todo-web:
+    build: ./todo-web
+    networks:
+      - todo
+    volumes:
+      - './todo-web:/app'
+    ports:
+      - 4200:4200
+
+  mongodb:
+    image: mongo
+    restart: always
+    networks:
+      - todo
+    volumes:
+      - mongo-data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: *MONGO_USER
+      MONGO_INITDB_ROOT_PASSWORD: *MONGO_PASSWORD
+
+networks:
+  todo:
+
+volumes:
+  mongo-data:

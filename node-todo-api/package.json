@@ -5,6 +5,7 @@
   "main": "./server/server.js",
   "scripts": {
     "start": "node server/server.js",
+    "watch": "node --inspect=0.0.0.0:9233 server/server.js",
     "test": "export NODE_ENV=test || SET \"NODE_ENV=test\" && mocha server/**/*.test.js",
     "test-watch": "nodemon --exec 'npm test'"
   },
